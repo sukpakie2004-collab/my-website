@@ -1,376 +1,354 @@
-
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-<title>GyanBari – জ্ঞান, তথ্য ও প্রযুক্তির নতুন ঠিকানা</title>
-
-<meta name="description" content="GyanBari হলো জ্ঞান, শিক্ষা, প্রযুক্তি, প্রয়োজনীয় তথ্য ও অনলাইন সেবার একটি সহজ প্ল্যাটফর্ম।">
-
-<meta name="author" content="GyanBari">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Md Roshidul Islam - Personal Portfolio Website">
+<meta name="author" content="Md Roshidul Islam">
+<title>Md Roshidul Islam | Personal Portfolio</title>
 
 <style>
-
-/* Basic Design */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #101827;
-  color: white;
-  text-align: center;
+  font-family: Arial, "Noto Sans Bengali", sans-serif;
+  background: #081321;
+  color: #f1f5f9;
+  line-height: 1.7;
 }
 
-/* Header */
 header {
+  background: rgba(8, 19, 33, 0.96);
+  border-bottom: 1px solid #1e3a50;
+  padding: 16px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #0b1220;
-  padding: 15px 10px;
-  border-bottom: 2px solid #16a085;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-header h2 {
-  margin: 5px 0 15px;
+.logo {
+  color: #42e8c5;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-/* Navigation */
 nav {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 18px;
 }
 
 nav a {
+  color: #e2e8f0;
   text-decoration: none;
-  color: white;
-  background: #263750;
-  padding: 10px 17px;
-  border-radius: 25px;
-  border: 1px solid #16a085;
   transition: 0.3s;
 }
 
 nav a:hover {
-  background: #00ff99;
-  color: #101827;
-  transform: scale(1.08);
+  color: #42e8c5;
 }
 
-/* Buttons */
-button,
-.cv-button {
-  display: inline-block;
-  padding: 12px 22px;
-  margin: 15px 5px;
+.language-btn, .main-btn {
+  background: #42e8c5;
+  color: #081321;
   border: none;
+  padding: 10px 19px;
   border-radius: 25px;
-  background: #16a085;
-  color: white;
-  text-decoration: none;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 15px;
+  text-decoration: none;
+  display: inline-block;
   transition: 0.3s;
 }
 
-button:hover,
-.cv-button:hover {
-  background: #00ff99;
-  color: #101827;
-  transform: scale(1.05);
-}
-
-/* Main */
-main {
-  padding: 35px 15px;
-}
-
-/* Profile */
-.profile {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #16a085;
-  animation: fadeUp 1s ease;
-}
-
-/* Sections */
-section {
-  max-width: 650px;
-  margin: 25px auto;
-  padding: 25px;
-  background: #1d2b42;
-  border-radius: 12px;
-  animation: fadeUp 1s ease;
-}
-
-section h2 {
-  color: #00ff99;
-}
-
-/* Skills */
-#skills {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-#skills h2,
-#skills .skill-intro {
-  grid-column: 1 / -1;
-}
-
-.skill-card {
-  background: #263750;
-  border: 1px solid #16a085;
-  padding: 18px;
-  border-radius: 12px;
-  transition: 0.3s;
-}
-
-.skill-card:hover {
-  background: #16a085;
-  transform: translateY(-5px);
-}
-
-/* Contact */
-.contact-card {
-  background: #263750;
-  border: 1px solid #16a085;
-  border-radius: 12px;
-  padding: 12px;
-  margin: 12px 0;
-  transition: 0.3s;
-}
-
-.contact-card:hover {
-  background: #16a085;
+.language-btn:hover, .main-btn:hover {
+  background: #ffffff;
   transform: translateY(-3px);
 }
 
+.hero {
+  min-height: 520px;
+  padding: 75px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 65px;
+  flex-wrap: wrap;
+  background: radial-gradient(circle at top right, #123b50, #081321 65%);
+}
+
+.hero-text {
+  max-width: 560px;
+}
+
+.hero-text .welcome {
+  color: #42e8c5;
+  font-size: 18px;
+}
+
+.hero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 12px 0;
+  line-height: 1.25;
+}
+
+.hero h1 span {
+  color: #42e8c5;
+}
+
+.hero-text p {
+  color: #bdcbd8;
+  margin: 18px 0 25px;
+  font-size: 17px;
+}
+
+.profile {
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #42e8c5;
+  box-shadow: 0 0 35px rgba(66,232,197,0.2);
+}
+
+section {
+  padding: 65px 8%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 35px;
+  color: #42e8c5;
+}
+
+.about-box {
+  background: #112337;
+  padding: 30px;
+  border: 1px solid #1e4558;
+  border-radius: 18px;
+  color: #d4e0eb;
+  text-align: center;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.skill-card {
+  background: #112337;
+  padding: 25px 12px;
+  border-radius: 14px;
+  border: 1px solid #1e4558;
+  text-align: center;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.skill-card:hover {
+  border-color: #42e8c5;
+  transform: translateY(-6px);
+  color: #42e8c5;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.contact-card {
+  background: #112337;
+  border: 1px solid #1e4558;
+  padding: 25px 12px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.contact-card h3 {
+  color: #42e8c5;
+  margin-bottom: 10px;
+}
+
 .contact-card a {
-  color: white;
+  color: #e2e8f0;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
-/* Animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.contact-card a:hover {
+  color: #42e8c5;
 }
 
-/* Footer */
 footer {
-  background: #0b1220;
-  padding: 20px;
-  margin-top: 30px;
-  border-top: 2px solid #16a085;
-  font-size: 14px;
+  text-align: center;
+  padding: 25px;
+  background: #050d17;
+  color: #9fb0c0;
+  border-top: 1px solid #1e3a50;
 }
 
-/* Mobile Responsive */
-@media (max-width: 500px) {
+@media (max-width: 750px) {
+  header {
+    justify-content: center;
+    text-align: center;
+  }
 
   nav {
-    gap: 6px;
+    justify-content: center;
   }
 
-  nav a {
-    padding: 9px 12px;
-    font-size: 13px;
+  .hero {
+    text-align: center;
+    gap: 30px;
   }
 
-  #skills {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .skills-grid {
     grid-template-columns: 1fr;
   }
 
-  section {
-    padding: 20px 15px;
-  }
-
-  header h2 {
-    font-size: 20px;
+  nav {
+    gap: 12px;
   }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- Header -->
 <header>
+  <div class="logo">Md Roshidul Islam</div>
 
-<h2>Md Roshidul Islam</h2>
+  <nav>
+    <a href="#home" data-bn="হোম" data-en="Home">হোম</a>
+    <a href="#about" data-bn="পরিচিতি" data-en="About">পরিচিতি</a>
+    <a href="#skills" data-bn="দক্ষতা" data-en="Skills">দক্ষতা</a>
+    <a href="#contact" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</a>
+  </nav>
 
-<nav>
-  <a href="#home" data-bn="হোম" data-en="Home">হোম</a>
-
-  <a href="#about" data-bn="পরিচিতি" data-en="About">পরিচিতি</a>
-
-  <a href="#skills" data-bn="দক্ষতা" data-en="Skills">দক্ষতা</a>
-
-  <a href="#contact" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</a>
-</nav>
-
-<button onclick="changeLanguage()" id="languageBtn">
-  English
-</button>
-
+  <button class="language-btn" id="languageBtn" onclick="changeLanguage()">English</button>
 </header>
 
-<!-- Main -->
-<main id="home">
+<main>
+  <div class="hero" id="home">
+    <div class="hero-text">
+      <p class="welcome" data-bn="আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম" data-en="Welcome to my personal website">
+        আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম
+      </p>
 
-<img src="profile.jpg"
-     class="profile"
-     alt="Profile Photo">
+      <h1>
+        <span data-bn="আমি" data-en="I am">আমি</span>
+        <span>Md Roshidul Islam</span>
+      </h1>
 
-<h1>Md Roshidul Islam</h1>
+      <p data-bn="আমি নতুন প্রযুক্তি শিখতে, কম্পিউটার ব্যবহার করতে এবং ওয়েব ডিজাইন ও সাইবার নিরাপত্তা সম্পর্কে জানতে আগ্রহী।"
+         data-en="I am interested in learning new technologies, using computers, web design and cybersecurity.">
+        আমি নতুন প্রযুক্তি শিখতে, কম্পিউটার ব্যবহার করতে এবং ওয়েব ডিজাইন ও সাইবার নিরাপত্তা সম্পর্কে জানতে আগ্রহী।
+      </p>
 
-<h3 data-bn="আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম"
-    data-en="Welcome to My Personal Website">
-আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম
-</h3>
+      <a href="cv.pdf" download class="main-btn"
+         data-bn="আমার CV ডাউনলোড করুন"
+         data-en="Download My CV">
+        আমার CV ডাউনলোড করুন
+      </a>
+    </div>
 
-<!-- CV Download -->
-<a href="cv.pdf" download class="cv-button"
-   data-bn="CV ডাউনলোড করুন"
-   data-en="Download CV">
-CV ডাউনলোড করুন
-</a>
+    <img src="profile.jpg" class="profile" alt="Md Roshidul Islam Profile Photo">
+  </div>
 
-<!-- About -->
-<section id="about">
+  <section id="about">
+    <h2 class="section-title" data-bn="আমার পরিচিতি" data-en="About Me">আমার পরিচিতি</h2>
 
-<h2 data-bn="আমার পরিচিতি"
-    data-en="About Me">
-আমার পরিচিতি
-</h2>
+    <div class="about-box">
+      <p data-bn="আমি Md Roshidul Islam। এটি আমার ব্যক্তিগত ওয়েবসাইট। এখানে আমার পরিচিতি, শেখার বিষয়, দক্ষতা এবং যোগাযোগের তথ্য দেওয়া হয়েছে। আমি প্রতিনিয়ত নতুন কিছু শিখতে এবং নিজের জ্ঞান বাড়াতে আগ্রহী।"
+         data-en="I am Md Roshidul Islam. This is my personal website. Here you can learn about me, my interests, skills and contact information. I enjoy learning new things and improving my knowledge.">
+        আমি Md Roshidul Islam। এটি আমার ব্যক্তিগত ওয়েবসাইট। এখানে আমার পরিচিতি, শেখার বিষয়, দক্ষতা এবং যোগাযোগের তথ্য দেওয়া হয়েছে। আমি প্রতিনিয়ত নতুন কিছু শিখতে এবং নিজের জ্ঞান বাড়াতে আগ্রহী।
+      </p>
+    </div>
+  </section>
 
-<p data-bn="আমি Md Roshidul Islam। এটি আমার ব্যক্তিগত ওয়েবসাইট। আমি নতুন প্রযুক্তি শিখতে এবং ওয়েব ডিজাইন করতে আগ্রহী।"
-   data-en="I am Md Roshidul Islam. This is my personal website. I am interested in learning new technologies and web design.">
-আমি Md Roshidul Islam। এটি আমার ব্যক্তিগত ওয়েবসাইট।
-আমি নতুন প্রযুক্তি শিখতে এবং ওয়েব ডিজাইন করতে আগ্রহী।
-</p>
+  <section id="skills">
+    <h2 class="section-title" data-bn="আমার শেখার বিষয়" data-en="My Skills & Interests">আমার শেখার বিষয়</h2>
 
-</section>
+    <div class="skills-grid">
+      <div class="skill-card">Computer</div>
+      <div class="skill-card">Microsoft Excel</div>
+      <div class="skill-card">Microsoft Word</div>
+      <div class="skill-card">HTML & CSS</div>
+      <div class="skill-card">Web Design</div>
+      <div class="skill-card">Graphic Design</div>
+      <div class="skill-card">Cyber Security</div>
+      <div class="skill-card">Ethical Hacking</div>
+    </div>
+  </section>
 
-<!-- Skills -->
-<section id="skills">
+  <section id="contact">
+    <h2 class="section-title" data-bn="আমার সাথে যোগাযোগ" data-en="Contact Me">আমার সাথে যোগাযোগ</h2>
 
-<h2 data-bn="আমার দক্ষতা"
-    data-en="My Skills">
-আমার দক্ষতা
-</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>✉️ Gmail</h3>
+        <a href="mailto:your-email@example.com">Email Me</a>
+      </div>
 
-<p class="skill-intro"
-   data-bn="আমি যেসব বিষয় শিখছি"
-   data-en="Currently Learning">
-আমি যেসব বিষয় শিখছি
-</p>
+      <div class="contact-card">
+        <h3>📱 WhatsApp</h3>
+        <a href="https://wa.me/8801XXXXXXXXX">WhatsApp Me</a>
+      </div>
 
-<div class="skill-card">Computer</div>
-
-<div class="skill-card">Microsoft Excel</div>
-
-<div class="skill-card">Microsoft Word</div>
-
-<div class="skill-card">Web Design</div>
-
-<div class="skill-card">HTML & CSS</div>
-
-<div class="skill-card">Graphic Design</div>
-
-<div class="skill-card">Ethical Hacking</div>
-
-<div class="skill-card">Cyber Security</div>
-
-</section>
-
-<!-- Contact -->
-<section id="contact">
-
-<h2 data-bn="যোগাযোগ করুন"
-    data-en="Contact Me">
-যোগাযোগ করুন
-</h2>
-
-<div class="contact-card">
-  <p>✉️ Gmail</p>
-  <a href="mailto:your-email@example.com">
-    Email Me
-  </a>
-</div>
-
-<div class="contact-card">
-  <p>📱 WhatsApp</p>
-  <a href="https://wa.me/8801XXXXXXXXX">
-    WhatsApp Me
-  </a>
-</div>
-
-<div class="contact-card">
-  <p>🌐 Facebook</p>
-  <a href="https://facebook.com/yourprofile">
-    Visit Facebook
-  </a>
-</div>
-
-</section>
-
+      <div class="contact-card">
+        <h3>🌐 Facebook</h3>
+        <a href="https://facebook.com/yourprofile">Visit Facebook</a>
+      </div>
+    </div>
+  </section>
 </main>
 
-<!-- Footer -->
 <footer>
-
-<p data-bn="© ২০২৬ Md Roshidul Islam। সর্বস্বত্ব সংরক্ষিত।"
-   data-en="© 2026 Md Roshidul Islam. All Rights Reserved.">
-© ২০২৬ Md Roshidul Islam। সর্বস্বত্ব সংরক্ষিত।
-</p>
-
+  <p>© <span id="year"></span> Md Roshidul Islam. <span data-bn="সর্বস্বত্ব সংরক্ষিত।" data-en="All Rights Reserved.">সর্বস্বত্ব সংরক্ষিত।</span></p>
 </footer>
 
-<!-- JavaScript -->
 <script>
-
 let currentLanguage = "bn";
 
 function changeLanguage() {
+  currentLanguage = currentLanguage === "bn" ? "en" : "bn";
 
-  currentLanguage =
-    currentLanguage === "bn" ? "en" : "bn";
-
-  document.querySelectorAll("[data-bn]").forEach(element => {
-
-    element.textContent =
-      element.dataset[currentLanguage];
-
+  document.querySelectorAll("[data-bn][data-en]").forEach(element => {
+    element.textContent = element.getAttribute("data-" + currentLanguage);
   });
 
   document.documentElement.lang = currentLanguage;
 
   document.getElementById("languageBtn").textContent =
     currentLanguage === "bn" ? "English" : "বাংলা";
-
 }
 
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
