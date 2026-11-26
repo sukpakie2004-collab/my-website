@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Login</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,7 +14,6 @@
       min-height: 100vh;
       margin: 0;
     }
-
     .login-box {
       background: white;
       padding: 25px;
@@ -23,7 +21,6 @@
       width: 320px;
       box-shadow: 0 4px 15px #0002;
     }
-
     input, button {
       width: 100%;
       box-sizing: border-box;
@@ -32,45 +29,34 @@
       font-size: 16px;
       border-radius: 6px;
     }
-
-    input {
-      border: 1px solid #ccc;
-    }
-
+    input { border: 1px solid #ccc; }
     button {
       background: #087d45;
       color: white;
       border: none;
       cursor: pointer;
     }
-
-    #message {
-      overflow-wrap: anywhere;
-    }
+    #resetButton { background: #2563eb; }
+    #message { overflow-wrap: anywhere; }
   </style>
 </head>
-
 <body>
   <div class="login-box">
     <h2>Admin Login</h2>
 
     <form id="loginForm">
-      <input
-        id="email"
-        type="email"
-        placeholder="আপনার Gmail"
-        required
-      >
+      <input id="email" type="email"
+        placeholder="আপনার Gmail" required>
 
-      <input
-        id="password"
-        type="password"
-        placeholder="পাসওয়ার্ড"
-        required
-      >
+      <input id="password" type="password"
+        placeholder="পাসওয়ার্ড" required>
 
       <button type="submit">Login</button>
     </form>
+
+    <button type="button" id="resetButton">
+      Forgot Password
+    </button>
 
     <p id="message"></p>
   </div>
@@ -79,26 +65,33 @@
     import { createClient } from
       'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-    // এখানে আপনার Supabase Project URL বসান
-const SUPABASE_URL = 'https://wxxmzqnumbgnspfdcdqb.supabase.co';
-    // এখানে আপনার Supabase Publishable Key বসান
-    const SUPABASE_ANON_KEY = 'sb_publishable_xDKg6K0npi5fPKvAPJZU9Q_9yIGvvfQ';
+    // আপনার আগের Supabase Project URL
+    const SUPABASE_URL =
+      'https://wxxmzqnumbgnspfdcdqb.supabase.co';
+
+    // আপনার আগের Publishable Key
+    const SUPABASE_ANON_KEY =
+      'sb_publishable_xDKg6K0npi5fPKvAPJZU9Q_9yIGvvfQ';
 
     const supabase = createClient(
       SUPABASE_URL,
       SUPABASE_ANON_KEY
     );
 
+    const message = document.getElementById('message');
+
+    // Admin Login
     document.getElementById('loginForm')
       .addEventListener('submit', async (event) => {
-
         event.preventDefault();
 
-        const message = document.getElementById('message');
         message.textContent = 'লগইন হচ্ছে...';
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const email =
+          document.getElementById('email').value.trim();
+
+        const password =
+          document.getElementById('password').value;
 
         const { data, error } =
           await supabase.auth.signInWithPassword({
@@ -107,7 +100,8 @@ const SUPABASE_URL = 'https://wxxmzqnumbgnspfdcdqb.supabase.co';
           });
 
         if (error) {
-          message.textContent = 'লগইন হয়নি: ' + error.message;
+          message.textContent =
+            'লগইন হয়নি: ' + error.message;
           return;
         }
 
@@ -120,11 +114,47 @@ const SUPABASE_URL = 'https://wxxmzqnumbgnspfdcdqb.supabase.co';
 
         if (roleError || roleData?.role !== 'admin') {
           await supabase.auth.signOut();
-          message.textContent = 'আপনার Admin অনুমতি নেই।';
+          message.textContent =
+            'আপনার Admin অনুমতি নেই।';
           return;
         }
 
-        message.textContent = 'Admin Login সফল হয়েছে!';
+        message.textContent =
+          'Admin Login সফল হয়েছে!';
+      });
+
+    // Password Reset
+    document.getElementById('resetButton')
+      .addEventListener('click', async () => {
+        const email =
+          document.getElementById('email').value.trim();
+
+        if (!email) {
+          message.textContent =
+            'আগে Gmail লিখুন।';
+          return;
+        }
+
+        message.textContent =
+          'রিসেট লিংক পাঠানো হচ্ছে...';
+
+        const redirectURL =
+          window.location.origin +
+          '/my-website/reset-password.html';
+
+        const { error } =
+          await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: redirectURL
+          });
+
+        if (error) {
+          message.textContent =
+            'সমস্যা হয়েছে: ' + error.message;
+          return;
+        }
+
+        message.textContent =
+          'আপনার Gmail-এ নতুন রিসেট লিংক পাঠানো হয়েছে।';
       });
   </script>
 </body>
