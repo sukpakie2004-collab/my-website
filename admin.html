@@ -5,99 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Panel</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     * { box-sizing: border-box; }
-
     body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
       margin: 0;
       padding: 20px;
-      background: #f1f5f9;
-      font-family: Arial, sans-serif;
       color: #1e293b;
     }
-
     .container {
-      max-width: 750px;
-      margin: 25px auto;
+      max-width: 700px;
+      margin: 30px auto;
     }
-
     .box {
       background: white;
       padding: 22px;
       margin-bottom: 20px;
       border-radius: 12px;
-      box-shadow: 0 3px 12px #00000012;
+      box-shadow: 0 3px 12px #0001;
     }
-
-    h2, h3 { margin-top: 0; }
-
-    input, textarea {
+    input, textarea, button {
       width: 100%;
-      padding: 13px;
-      margin: 8px 0 15px;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 16px;
+      border-radius: 7px;
+    }
+    input, textarea {
       border: 1px solid #cbd5e1;
-      border-radius: 7px;
-      font-size: 16px;
     }
-
-    textarea {
-      min-height: 150px;
-      resize: vertical;
-    }
-
+    textarea { min-height: 130px; }
     button {
-      padding: 12px 18px;
       border: 0;
-      border-radius: 7px;
-      background: #2563eb;
+      background: #087d45;
       color: white;
-      font-size: 16px;
       cursor: pointer;
-      margin: 5px 3px 5px 0;
     }
-
-    button:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .red { background: #dc2626; }
-    .green { background: #15803d; }
-
-    .muted {
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    #message, #postMessage {
-      margin-top: 12px;
-      overflow-wrap: anywhere;
-    }
-
+    button:disabled { opacity: .6; }
+    .delete { background: #c62828; }
+    .secondary { background: #475569; }
     .post {
-      border: 1px solid #e2e8f0;
-      border-radius: 9px;
-      padding: 15px;
-      margin: 15px 0;
-      overflow-wrap: anywhere;
+      border: 1px solid #ddd;
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 8px;
     }
-
     .post img {
       max-width: 100%;
-      height: auto;
+      max-height: 250px;
       display: block;
+      margin: 10px 0;
       border-radius: 8px;
-      margin: 12px 0;
     }
-
-    [hidden] { display: none !important; }
+    #message { overflow-wrap: anywhere; }
+    .hidden { display: none; }
   </style>
 </head>
 
 <body>
-
 <div class="container">
 
   <!-- Login -->
@@ -119,167 +85,125 @@
         required
       >
 
-      <button type="submit" id="loginButton">
-        Login
-      </button>
+      <button type="submit" id="loginButton">Login</button>
     </form>
-
-    <button type="button" id="resetButton">
-      Forgot Password?
-    </button>
 
     <p id="message"></p>
   </section>
 
   <!-- Admin Panel -->
-  <section class="box" id="adminPanel" hidden>
-
-    <h2>Admin Panel</h2>
-
-    <button type="button" id="logoutButton" class="red">
-      Logout
-    </button>
-
-    <hr>
-
-    <!-- New Post -->
-    <h3>নতুন পোস্ট করুন</h3>
-
-    <form id="postForm">
-
-      <input
-        id="postTitle"
-        type="text"
-        placeholder="পোস্টের শিরোনাম"
-        required
-      >
-
-      <textarea
-        id="postContent"
-        placeholder="পোস্টের বিস্তারিত লিখুন"
-        required
-      ></textarea>
-
-      <label>ছবি নির্বাচন করুন:</label>
-
-      <input
-        id="postImage"
-        type="file"
-        accept="image/*"
-      >
-
-      <button type="submit" id="publishButton" class="green">
-        Publish Post
+  <section id="adminPanel" class="hidden">
+    <div class="box">
+      <h2>Admin Panel</h2>
+      <p>আপনি সফলভাবে লগইন করেছেন।</p>
+      <button type="button" id="logoutButton" class="secondary">
+        Logout
       </button>
-
-    </form>
-
-    <p id="postMessage"></p>
-
-    <hr>
-
-    <!-- Posts -->
-    <h3>আগের পোস্টগুলো</h3>
-
-    <button type="button" id="refreshButton">
-      পোস্ট Refresh
-    </button>
-
-    <div id="postsList">
-      পোস্ট লোড হচ্ছে...
     </div>
 
+    <div class="box">
+      <h2>নতুন পোস্ট লিখুন</h2>
+
+      <form id="postForm">
+        <input
+          id="postTitle"
+          type="text"
+          placeholder="পোস্টের শিরোনাম"
+          required
+        >
+
+        <textarea
+          id="postContent"
+          placeholder="পোস্টের বিস্তারিত লিখুন"
+          required
+        ></textarea>
+
+        <label>পোস্টের ছবি (ঐচ্ছিক)</label>
+        <input id="postImage" type="file" accept="image/*">
+
+        <button type="submit" id="postButton">
+          পোস্ট সংরক্ষণ করুন
+        </button>
+      </form>
+
+      <p id="postMessage"></p>
+    </div>
+
+    <div class="box">
+      <h2>আপনার পোস্টগুলো</h2>
+      <div id="postsList">পোস্ট লোড হচ্ছে...</div>
+    </div>
   </section>
 
 </div>
 
-<script>
-  // Supabase Configuration
+<script type="module">
+  import { createClient } from
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+  // Supabase Project URL
   const SUPABASE_URL =
     'https://wxxmzqnumbgnspfdcdqb.supabase.co';
 
+  // এখানে আপনার Publishable Key একবার বসান
   const SUPABASE_ANON_KEY =
     'sb_publishable_xDKg6K0npi5fPKvAPJZU9Q_9yIGvvfQ';
 
-  const supabaseClient = window.supabase.createClient(
-    
-    const $ = (id) => document.getElementById(id);
+  const supabaseClient = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-  // Message
-  function showMessage(message, isError = false) {
+  const $ = (id) => document.getElementById(id);
+
+  let currentUser = null;
+
+  function showMessage(message) {
     $('message').textContent = message;
-    $('message').style.color =
-      isError ? '#dc2626' : '#15803d';
   }
 
-  // Escape HTML
-  function escapeHTML(value) {
-    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    })[char]);
+  function showAdminPanel() {
+    $('loginBox').classList.add('hidden');
+    $('adminPanel').classList.remove('hidden');
   }
 
-  // Admin Check
+  function showLogin() {
+    $('adminPanel').classList.add('hidden');
+    $('loginBox').classList.remove('hidden');
+  }
+
+  // Admin যাচাই
   async function checkAdmin() {
-    try {
-      const {
-        data: { session },
-        error: sessionError
-      } = await supabaseClient.auth.getSession();
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
 
-      if (sessionError) throw sessionError;
-
-      if (!session) {
-        $('loginBox').hidden = false;
-        $('adminPanel').hidden = true;
-        return false;
-      }
-
-      const { data: roleData, error: roleError } =
-        await supabaseClient
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-
-      if (roleError) throw roleError;
-
-      if (!roleData || roleData.role !== 'admin') {
-        await supabaseClient.auth.signOut();
-
-        $('loginBox').hidden = false;
-        $('adminPanel').hidden = true;
-
-        showMessage('আপনার Admin অনুমতি নেই।', true);
-        return false;
-      }
-
-      $('loginBox').hidden = true;
-      $('adminPanel').hidden = false;
-
-      await loadPosts();
-
-      return true;
-
-    } catch (error) {
-      $('loginBox').hidden = false;
-      $('adminPanel').hidden = true;
-
-      showMessage('যাচাই সমস্যা: ' + error.message, true);
-      return false;
+    if (userError || !userData.user) {
+      throw new Error('লগইন পাওয়া যায়নি।');
     }
+
+    currentUser = userData.user;
+
+    const { data, error } = await supabaseClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', currentUser.id)
+      .single();
+
+    if (error) throw error;
+
+    if (data.role !== 'admin') {
+      throw new Error('আপনার Admin অনুমতি নেই।');
+    }
+
+    return true;
   }
 
   // Login
   $('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    $('loginButton').disabled = true;
+    const button = $('loginButton');
+    button.disabled = true;
     showMessage('লগইন হচ্ছে...');
 
     try {
@@ -287,240 +211,218 @@
       const password = $('password').value;
 
       const { error } = await supabaseClient.auth
-        .signInWithPassword({
-          email,
-          password
-        });
+        .signInWithPassword({ email, password });
 
       if (error) throw error;
 
-      const ok = await checkAdmin();
+      await checkAdmin();
 
-      if (ok) {
-        showMessage('Admin Login সফল হয়েছে!');
-      }
-
-    } catch (error) {
-      showMessage('লগইন হয়নি: ' + error.message, true);
-
-    } finally {
-      $('loginButton').disabled = false;
-    }
-  });
-
-  // Forgot Password
-  $('resetButton').addEventListener('click', async () => {
-    const email = $('email').value.trim();
-
-    if (!email) {
-      showMessage('আগে Gmail লিখুন।', true);
-      return;
-    }
-
-    showMessage('রিসেট লিংক পাঠানো হচ্ছে...');
-
-    try {
-      const redirectURL =
-        window.location.origin +
-        '/my-website/reset-password.html';
-
-      const { error } = await supabaseClient.auth
-        .resetPasswordForEmail(email, {
-          redirectTo: redirectURL
-        });
-
-      if (error) throw error;
-
-      showMessage('আপনার Gmail-এ রিসেট লিংক পাঠানো হয়েছে।');
-
-    } catch (error) {
-      showMessage('সমস্যা হয়েছে: ' + error.message, true);
-    }
-  });
-
-  // Load Posts
-  async function loadPosts() {
-    $('postsList').textContent = 'পোস্ট লোড হচ্ছে...';
-
-    try {
-      const { data, error } = await supabaseClient
-        .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        $('postsList').textContent = 'এখনো কোনো পোস্ট নেই।';
-        return;
-      }
-
-      $('postsList').innerHTML = data.map((post) => `
-        <article class="post">
-
-          <h3>${escapeHTML(post.title)}</h3>
-
-          <p>${escapeHTML(post.content).replace(/\n/g, '<br>')}</p>
-
-          ${post.image_url
-            ? <img src="${escapeHTML(post.image_url)}" alt="পোস্টের ছবি">
-            : ''}
-
-          <p class="muted">
-            ${post.created_at
-              ? new Date(post.created_at).toLocaleString('bn-BD')
-              : ''}
-          </p>
-
-          <button
-            type="button"
-            class="red"
-            data-delete-id="${escapeHTML(post.id)}"
-          >
-            পোস্ট মুছুন
-          </button>
-
-        </article>
-      `).join('');
-
-    } catch (error) {
-      $('postsList').textContent =
-        'পোস্ট লোড হয়নি: ' + error.message;
-    }
-  }
-
-  // Publish Post
-  $('postForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const title = $('postTitle').value.trim();
-    const content = $('postContent').value.trim();
-    const file = $('postImage').files[0];
-
-    if (!title || !content) {
-      $('postMessage').textContent =
-        'শিরোনাম ও লেখা পূরণ করুন।';
-      return;
-    }
-
-    $('publishButton').disabled = true;
-    $('postMessage').textContent = 'পোস্ট প্রকাশ হচ্ছে...';
-
-    try {
-      let imageURL = null;
-
-      // Upload Image
-      if (file) {
-        if (!file.type.startsWith('image/')) {
-          throw new Error('শুধু ছবির ফাইল নির্বাচন করুন।');
-        }
-
-        const safeName = file.name.replace(
-          /[^a-zA-Z0-9._-]/g,
-          '_'
-        );
-
-        const filePath =
-          Date.now() + '-' + safeName;
-
-        const { error: uploadError } =
-          await supabaseClient.storage
-            .from('post-images')
-            .upload(filePath, file);
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicData } =
-          supabaseClient.storage
-            .from('post-images')
-            .getPublicUrl(filePath);
-
-        imageURL = publicData.publicUrl;
-      }
-
-      // Save Post
-      const { error: insertError } =
-        await supabaseClient
-          .from('posts')
-          .insert([{
-            title: title,
-            content: content,
-            image_url: imageURL,
-            published: true
-          }]);
-
-      if (insertError) throw insertError;
-
-      $('postForm').reset();
-
-      $('postMessage').textContent =
-        'পোস্ট সফলভাবে প্রকাশ হয়েছে!';
-
+      showMessage('Admin Login সফল হয়েছে!');
+      showAdminPanel();
       await loadPosts();
 
     } catch (error) {
-      $('postMessage').textContent =
-        'পোস্ট হয়নি: ' + error.message;
-
+      showMessage('সমস্যা: ' + error.message);
+      await supabaseClient.auth.signOut();
     } finally {
-      $('publishButton').disabled = false;
-    }
-  });
-
-  // Delete Post
-  $('postsList').addEventListener('click', async (event) => {
-    const button = event.target.closest('[data-delete-id]');
-
-    if (!button) return;
-
-    const postId = button.dataset.deleteId;
-
-    if (!confirm('আপনি কি পোস্টটি মুছতে চান?')) {
-      return;
-    }
-
-    button.disabled = true;
-
-    try {
-      const { error } = await supabaseClient
-        .from('posts')
-        .delete()
-        .eq('id', postId);
-
-      if (error) throw error;
-
-      await loadPosts();
-
-    } catch (error) {
-      alert('পোস্ট মোছা যায়নি: ' + error.message);
       button.disabled = false;
     }
   });
 
-  // Refresh
-  $('refreshButton').addEventListener('click', loadPosts);
-
   // Logout
   $('logoutButton').addEventListener('click', async () => {
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-      alert('Logout সমস্যা: ' + error.message);
-      return;
-    }
-
-    $('adminPanel').hidden = true;
-    $('loginBox').hidden = false;
-
-    $('loginForm').reset();
-
+    await supabaseClient.auth.signOut();
+    currentUser = null;
+    showLogin();
     showMessage('আপনি লগআউট করেছেন।');
   });
 
-  // Check Existing Login
-  checkAdmin();
+  // ছবি Storage-এ আপলোড
+  async function uploadImage(file) {
+    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+    const filePath =
+      currentUser.id + '/' + Date.now() + '-' + safeName;
 
+    const { error } = await supabaseClient.storage
+      .from('post-images')
+      .upload(filePath, file);
+
+    if (error) throw error;
+
+    const { data } = supabaseClient.storage
+      .from('post-images')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  }
+
+  // নতুন পোস্ট
+  $('postForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const button = $('postButton');
+    button.disabled = true;
+    $('postMessage').textContent = 'পোস্ট সংরক্ষণ হচ্ছে...';
+
+    try {
+      const title = $('postTitle').value.trim();
+      const content = $('postContent').value.trim();
+      const file = $('postImage').files[0];
+
+      let imageUrl = null;
+
+      if (file) {
+        if (!file.type.startsWith('image/')) {
+          throw new Error('শুধু ছবির ফাইল নির্বাচন করুন।');
+        }
+        imageUrl = await uploadImage(file);
+      }
+
+      const { error } = await supabaseClient
+        .from('posts')
+        .insert({
+          title,
+          content,
+          image_url: imageUrl,
+          published: false
+        });
+
+      if (error) throw error;
+
+      $('postForm').reset();
+      $('postMessage').textContent =
+        'পোস্ট সংরক্ষণ হয়েছে। এখনো প্রকাশ করা হয়নি।';
+
+      await loadPosts();
+
+    } catch (error) {
+      $('postMessage').textContent =
+        'সমস্যা: ' + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  // পোস্ট লোড
+  async function loadPosts() {
+    $('postsList').textContent = 'পোস্ট লোড হচ্ছে...';
+
+    const { data, error } = await supabaseClient
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      $('postsList').textContent =
+        'পোস্ট লোড হয়নি: ' + error.message;
+      return;
+    }
+
+    $('postsList').replaceChildren();
+
+    if (!data || data.length === 0) {
+      $('postsList').textContent = 'এখনো কোনো পোস্ট নেই।';
+      return;
+    }
+
+    data.forEach((post) => {
+      const item = document.createElement('div');
+      item.className = 'post';
+
+      const heading = document.createElement('h3');
+      heading.textContent = post.title;
+      item.appendChild(heading);
+
+      const paragraph = document.createElement('p');
+      paragraph.textContent = post.content;
+      item.appendChild(paragraph);
+
+      if (post.image_url) {
+        const image = document.createElement('img');
+        image.src = post.image_url;
+        image.alt = post.title;
+        item.appendChild(image);
+      }
+
+      const status = document.createElement('p');
+      status.textContent = post.published
+        ? 'অবস্থা: প্রকাশিত'
+        : 'অবস্থা: প্রকাশিত হয়নি';
+      item.appendChild(status);
+
+      const publishButton = document.createElement('button');
+      publishButton.textContent = post.published
+        ? 'প্রকাশ বন্ধ করুন'
+        : 'পোস্ট প্রকাশ করুন';
+
+      publishButton.addEventListener('click', async () => {
+        publishButton.disabled = true;
+
+        const { error } = await supabaseClient
+          .from('posts')
+          .update({
+            published: !post.published,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', post.id);
+
+        if (error) {
+          alert('সমস্যা: ' + error.message);
+          publishButton.disabled = false;
+          return;
+        }
+
+        await loadPosts();
+      });
+
+      item.appendChild(publishButton);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'পোস্ট মুছুন';
+      deleteButton.className = 'delete';
+
+      deleteButton.addEventListener('click', async () => {
+        if (!confirm('এই পোস্টটি মুছে ফেলবেন?')) return;
+
+        deleteButton.disabled = true;
+
+        const { error } = await supabaseClient
+          .from('posts')
+          .delete()
+          .eq('id', post.id);
+
+        if (error) {
+          alert('সমস্যা: ' + error.message);
+          deleteButton.disabled = false;
+          return;
+        }
+
+        await loadPosts();
+      });
+
+      item.appendChild(deleteButton);
+      $('postsList').appendChild(item);
+    });
+  }
+
+  // আগে থেকেই লগইন করা থাকলে Admin যাচাই
+  async function checkExistingSession() {
+    try {
+      const { data } = await supabaseClient.auth.getSession();
+
+      if (data.session) {
+        await checkAdmin();
+        showAdminPanel();
+        await loadPosts();
+      }
+    } catch (error) {
+      await supabaseClient.auth.signOut();
+      showLogin();
+      showMessage(error.message);
+    }
+  }
+
+  checkExistingSession();
 </script>
-
 </body>
 </html>
