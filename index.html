@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="YkRm7W5s_R3IpRKntGQltEi2pvnb-SY0vPpUNGULixk" />
+<meta name="google-site-verification" content="YkRm7W5s_R3IpRKntGQltEi2pvnb-SY0vPpUNGULixk">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Md Roshidul Islam - Personal Portfolio Website">
 <meta name="author" content="Md Roshidul Islam">
@@ -195,6 +195,48 @@ section {
   color: #42e8c5;
 }
 
+/* Posts */
+.post-card {
+  background: #112337;
+  border: 1px solid #1e4558;
+  padding: 24px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+}
+
+.post-card h3 {
+  color: #42e8c5;
+  font-size: 23px;
+  margin-bottom: 12px;
+}
+
+.post-card p {
+  color: #d4e0eb;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.post-card img {
+  display: block;
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  margin: 16px auto;
+  border-radius: 10px;
+}
+
+.post-date {
+  color: #9fb0c0;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+#postsMessage {
+  text-align: center;
+  color: #bdcbd8;
+  padding: 15px;
+}
+
 footer {
   text-align: center;
   padding: 25px;
@@ -248,6 +290,7 @@ footer {
     <a href="#home" data-bn="হোম" data-en="Home">হোম</a>
     <a href="#about" data-bn="পরিচিতি" data-en="About">পরিচিতি</a>
     <a href="#skills" data-bn="দক্ষতা" data-en="Skills">দক্ষতা</a>
+    <a href="#posts" data-bn="পোস্ট" data-en="Posts">পোস্ট</a>
     <a href="#contact" data-bn="যোগাযোগ" data-en="Contact">যোগাযোগ</a>
   </nav>
 
@@ -307,6 +350,16 @@ footer {
     </div>
   </section>
 
+  <!-- Published Posts -->
+  <section id="posts">
+    <h2 class="section-title" data-bn="সর্বশেষ পোস্ট" data-en="Latest Posts">
+      সর্বশেষ পোস্ট
+    </h2>
+
+    <div id="postsMessage">পোস্ট লোড হচ্ছে...</div>
+    <div id="postsList"></div>
+  </section>
+
   <section id="contact">
     <h2 class="section-title" data-bn="আমার সাথে যোগাযোগ" data-en="Contact Me">আমার সাথে যোগাযোগ</h2>
 
@@ -330,7 +383,9 @@ footer {
 </main>
 
 <footer>
-  <p>© <span id="year"></span> Md Roshidul Islam. <span data-bn="সর্বস্বত্ব সংরক্ষিত।" data-en="All Rights Reserved.">সর্বস্বত্ব সংরক্ষিত।</span></p>
+  <p>© <span id="year"></span> Md Roshidul Islam.
+    <span data-bn="সর্বস্বত্ব সংরক্ষিত।" data-en="All Rights Reserved.">সর্বস্বত্ব সংরক্ষিত।</span>
+  </p>
 </footer>
 
 <script>
@@ -350,6 +405,87 @@ function changeLanguage() {
 }
 
 document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+<script type="module">
+import { createClient } from
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL =
+  'https://wxxmzqnumbgnspfdcdqb.supabase.co';
+
+const SUPABASE_ANON_KEY =
+  'sb_publishable_xDKg6K0npi5fPKvAPJZU9Q_9yIGvvfQ';
+
+const supabaseClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const postsList = document.getElementById('postsList');
+const postsMessage = document.getElementById('postsMessage');
+
+async function loadPublishedPosts() {
+  try {
+    const { data, error } = await supabaseClient
+      .from('posts')
+      .select('id, title, content, image_url, created_at')
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    postsList.replaceChildren();
+
+    if (!data || data.length === 0) {
+      postsMessage.textContent = 'এখনো কোনো প্রকাশিত পোস্ট নেই।';
+      return;
+    }
+
+    postsMessage.textContent = '';
+
+    data.forEach(post => {
+      const article = document.createElement('article');
+      article.className = 'post-card';
+
+      const title = document.createElement('h3');
+      title.textContent = post.title;
+      article.appendChild(title);
+
+      if (post.image_url) {
+        const img = document.createElement('img');
+        img.src = post.image_url;
+        img.alt = post.title;
+        img.loading = 'lazy';
+        article.appendChild(img);
+      }
+
+      const content = document.createElement('p');
+      content.textContent = post.content;
+      article.appendChild(content);
+
+      const date = document.createElement('div');
+      date.className = 'post-date';
+
+      if (post.created_at) {
+        date.textContent = new Date(post.created_at).toLocaleDateString(
+          'bn-BD',
+          { year: 'numeric', month: 'long', day: 'numeric' }
+        );
+      }
+
+      article.appendChild(date);
+      postsList.appendChild(article);
+    });
+
+  } catch (error) {
+    postsMessage.textContent =
+      'পোস্ট লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।';
+    console.error('Post loading error:', error);
+  }
+}
+
+loadPublishedPosts();
 </script>
 
 </body>
