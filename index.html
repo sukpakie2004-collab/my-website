@@ -28,6 +28,57 @@ header {
   border-bottom: 1px solid #1e3a50;
   padding: 16px 7%;
   display: flex;
+  justify-conte…
+CREATE TABLE IF NOT EXISTS public.post_likes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID NOT NULL REFERENCES public.posts(id) ON DELETE CASCADE,
+  visitor_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (post_id, visitor_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.post_comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID NOT NULL REFERENCES public.posts(id) ON DELETE CASCADE,
+  author_name TEXT NOT NULL DEFAULT 'পাঠক',
+  content TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.post_likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.post_comments ENABLE ROW LEVEL SECURITY;…
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="YkRm7W5s_R3IpRKntGQltEi2pvnb-SY0vPpUNGULixk">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Md Roshidul Islam - Personal Portfolio Website">
+<meta name="author" content="Md Roshidul Islam">
+<title>Md Roshidul Islam | Personal Portfolio</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, "Noto Sans Bengali", sans-serif;
+  background: #081321;
+  color: #f1f5f9;
+  line-height: 1.7;
+}
+
+header {
+  background: rgba(8,19,33,.96);
+  border-bottom: 1px solid #1e3a50;
+  padding: 16px 7%;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
@@ -52,7 +103,6 @@ nav {
 nav a {
   color: #e2e8f0;
   text-decoration: none;
-  transition: 0.3s;
 }
 
 nav a:hover {
@@ -69,11 +119,11 @@ nav a:hover {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  transition: 0.3s;
+  transition: .3s;
 }
 
 .language-btn:hover, .main-btn:hover {
-  background: #ffffff;
+  background: white;
   transform: translateY(-3px);
 }
 
@@ -85,7 +135,7 @@ nav a:hover {
   justify-content: center;
   gap: 65px;
   flex-wrap: wrap;
-  background: radial-gradient(circle at top right, #123b50, #081321 65%);
+  background: radial-gradient(circle at top right,#123b50,#081321 65%);
 }
 
 .hero-text {
@@ -98,7 +148,7 @@ nav a:hover {
 }
 
 .hero h1 {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(32px,5vw,52px);
   margin: 12px 0;
   line-height: 1.25;
 }
@@ -119,7 +169,7 @@ nav a:hover {
   border-radius: 50%;
   object-fit: cover;
   border: 5px solid #42e8c5;
-  box-shadow: 0 0 35px rgba(66,232,197,0.2);
+  box-shadow: 0 0 35px rgba(66,232,197,.2);
 }
 
 section {
@@ -146,7 +196,7 @@ section {
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4,1fr);
   gap: 18px;
 }
 
@@ -156,7 +206,7 @@ section {
   border-radius: 14px;
   border: 1px solid #1e4558;
   text-align: center;
-  transition: 0.3s;
+  transition: .3s;
   font-weight: bold;
 }
 
@@ -168,7 +218,7 @@ section {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3,1fr);
   gap: 18px;
 }
 
@@ -231,6 +281,93 @@ section {
   margin-top: 15px;
 }
 
+/* Like, comment and share */
+.post-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #1e4558;
+}
+
+.post-actions button {
+  background: #1b354b;
+  color: #e2e8f0;
+  border: 1px solid #31536b;
+  padding: 9px 16px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.post-actions button:hover,
+.post-actions button.liked {
+  background: #42e8c5;
+  color: #081321;
+}
+
+.comment-area {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #1e4558;
+}
+
+.comment-area h4 {
+  color: #42e8c5;
+  margin-bottom: 12px;
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 10px;
+  background: #081321;
+  color: white;
+  border: 1px solid #31536b;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.comment-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.comment-form button {
+  background: #42e8c5;
+  color: #081321;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.comment-item {
+  background: #0b1b2b;
+  border: 1px solid #1e4558;
+  padding: 12px;
+  border-radius: 9px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.comment-item strong {
+  color: #42e8c5;
+}
+
+.comment-item p {
+  margin-top: 5px;
+}
+
+.comment-message {
+  color: #bdcbd8;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
 #postsMessage {
   text-align: center;
   color: #bdcbd8;
@@ -245,7 +382,7 @@ footer {
   border-top: 1px solid #1e3a50;
 }
 
-@media (max-width: 750px) {
+@media(max-width:750px) {
   header {
     justify-content: center;
     text-align: center;
@@ -261,7 +398,7 @@ footer {
   }
 
   .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2,1fr);
   }
 
   .contact-grid {
@@ -269,7 +406,7 @@ footer {
   }
 }
 
-@media (max-width: 400px) {
+@media(max-width:400px) {
   .skills-grid {
     grid-template-columns: 1fr;
   }
@@ -298,6 +435,7 @@ footer {
 </header>
 
 <main>
+
   <div class="hero" id="home">
     <div class="hero-text">
       <p class="welcome" data-bn="আমার ব্যক্তিগত ওয়েবসাইটে স্বাগতম" data-en="Welcome to my personal website">
@@ -350,7 +488,6 @@ footer {
     </div>
   </section>
 
-  <!-- Published Posts -->
   <section id="posts">
     <h2 class="section-title" data-bn="সর্বশেষ পোস্ট" data-en="Latest Posts">
       সর্বশেষ পোস্ট
@@ -380,6 +517,7 @@ footer {
       </div>
     </div>
   </section>
+
 </main>
 
 <footer>
@@ -425,9 +563,16 @@ const supabaseClient = createClient(
 const postsList = document.getElementById('postsList');
 const postsMessage = document.getElementById('postsMessage');
 
+let visitorId = localStorage.getItem('website_visitor_id');
+
+if (!visitorId) {
+  visitorId = crypto.randomUUID();
+  localStorage.setItem('website_visitor_id', visitorId);
+}
+
 async function loadPublishedPosts() {
   try {
-    const { data, error } = await supabaseClient
+    const { data: posts, error } = await supabaseClient
       .from('posts')
       .select('id, title, content, image_url, created_at')
       .eq('published', true)
@@ -437,14 +582,14 @@ async function loadPublishedPosts() {
 
     postsList.replaceChildren();
 
-    if (!data || data.length === 0) {
+    if (!posts || posts.length === 0) {
       postsMessage.textContent = 'এখনো কোনো প্রকাশিত পোস্ট নেই।';
       return;
     }
 
     postsMessage.textContent = '';
 
-    data.forEach(post => {
+    for (const post of posts) {
       const article = document.createElement('article');
       article.className = 'post-card';
 
@@ -475,12 +620,217 @@ async function loadPublishedPosts() {
       }
 
       article.appendChild(date);
+
+      // Like button
+      const actions = document.createElement('div');
+      actions.className = 'post-actions';
+
+      const likeButton = document.createElement('button');
+      const shareButton = document.createElement('button');
+
+      const { data: likes, error: likesError } = await supabaseClient
+        .from('post_likes')
+        .select('visitor_id')
+        .eq('post_id', post.id);
+
+      if (likesError) throw likesError;
+
+      let liked = likes.some(item => item.visitor_id === visitorId);
+
+      function updateLikeButton() {
+        likeButton.textContent =
+          (liked ? '❤️ লাইক দেওয়া হয়েছে' : '🤍 লাইক') +
+          ' (' + likes.length + ')';
+
+        likeButton.classList.toggle('liked', liked);
+      }
+
+      updateLikeButton();
+
+      likeButton.addEventListener('click', async () => {
+        likeButton.disabled = true;
+
+        try {
+          if (liked) {
+            const { error } = await supabaseClient
+              .from('post_likes')
+              .delete()
+              .eq('post_id', post.id)
+              .eq('visitor_id', visitorId);
+
+            if (error) throw error;
+
+            liked = false;
+            const index = likes.findIndex(
+              item => item.visitor_id === visitorId
+            );
+            if (index !== -1) likes.splice(index, 1);
+
+          } else {
+            const { error } = await supabaseClient
+              .from('post_likes')
+              .insert({
+                post_id: post.id,
+                visitor_id: visitorId
+              });
+
+            if (error) throw error;
+
+            liked = true;
+            likes.push({ visitor_id: visitorId });
+          }
+
+          updateLikeButton();
+
+        } catch (error) {
+          alert('লাইক দেওয়া যায়নি। আবার চেষ্টা করুন।');
+          console.error(error);
+        } finally {
+          likeButton.disabled = false;
+        }
+      });
+
+      // Share button
+      shareButton.textContent = '🔗 শেয়ার';
+
+      shareButton.addEventListener('click', async () => {
+        const postUrl = new URL(window.location.href);
+        postUrl.hash = 'posts';
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: post.title,
+              text: post.content.slice(0, 150),
+              url: postUrl.href
+            });
+          } else {
+            await navigator.clipboard.writeText(postUrl.href);
+            alert('পোস্টের লিংক কপি হয়েছে।');
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            alert('শেয়ার করা যায়নি।');
+          }
+        }
+      });
+
+      actions.append(likeButton, shareButton);
+      article.appendChild(actions);
+
+      // Comments
+      const commentArea = document.createElement('div');
+      commentArea.className = 'comment-area';
+
+      const commentTitle = document.createElement('h4');
+      commentTitle.textContent = '💬 মন্তব্য';
+
+      const commentsList = document.createElement('div');
+      const commentMessage = document.createElement('div');
+      commentMessage.className = 'comment-message';
+
+      const { data: comments, error: commentError } =
+        await supabaseClient
+          .from('post_comments')
+          .select('author_name, content, created_at')
+          .eq('post_id', post.id)
+          .eq('status', 'approved')
+          .order('created_at', { ascending: true });
+
+      if (commentError) throw commentError;
+
+      if (!comments || comments.length === 0) {
+        commentsList.textContent = 'এখনো কোনো মন্তব্য নেই।';
+      } else {
+        comments.forEach(comment => {
+          const item = document.createElement('div');
+          item.className = 'comment-item';
+
+          const author = document.createElement('strong');
+          author.textContent = comment.author_name;
+
+          const text = document.createElement('p');
+          text.textContent = comment.content;
+
+          item.append(author, text);
+          commentsList.appendChild(item);
+        });
+      }
+
+      const form = document.createElement('form');
+      form.className = 'comment-form';
+
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.placeholder = 'আপনার নাম (ঐচ্ছিক)';
+      nameInput.maxLength = 40;
+
+      const commentInput = document.createElement('textarea');
+      commentInput.placeholder = 'আপনার মন্তব্য লিখুন...';
+      commentInput.maxLength = 1000;
+      commentInput.required = true;
+
+      const submitButton = document.createElement('button');
+      submitButton.type = 'submit';
+      submitButton.textContent = 'মন্তব্য পাঠান';
+
+      form.append(nameInput, commentInput, submitButton);
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        const commentText = commentInput.value.trim();
+        const authorName = nameInput.value.trim() || 'পাঠক';
+
+        if (!commentText) {
+          commentMessage.textContent = 'মন্তব্য লিখুন।';
+          return;
+        }
+
+        submitButton.disabled = true;
+        commentMessage.textContent = 'মন্তব্য পাঠানো হচ্ছে...';
+
+        try {
+          const { error } = await supabaseClient
+            .from('post_comments')
+            .insert({
+              post_id: post.id,
+              author_name: authorName,
+              content: commentText,
+              status: 'pending'
+            });
+
+          if (error) throw error;
+
+          commentInput.value = '';
+          nameInput.value = '';
+
+          commentMessage.textContent =
+            'আপনার মন্তব্য জমা হয়েছে। অনুমোদনের পর দেখা যাবে।';
+
+        } catch (error) {
+          commentMessage.textContent =
+            'মন্তব্য পাঠানো যায়নি। আবার চেষ্টা করুন।';
+          console.error(error);
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      commentArea.append(
+        commentTitle,
+        commentsList,
+        form,
+        commentMessage
+      );
+
+      article.appendChild(commentArea);
       postsList.appendChild(article);
-    });
+    }
 
   } catch (error) {
     postsMessage.textContent =
-      'পোস্ট লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।';
+      'পোস্ট লোড করা যায়নি। Supabase সেটিংস পরীক্ষা করুন।';
     console.error('Post loading error:', error);
   }
 }
